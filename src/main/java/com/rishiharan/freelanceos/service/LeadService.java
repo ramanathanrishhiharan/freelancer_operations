@@ -1,50 +1,90 @@
 package com.rishiharan.freelanceos.service;
 
+import com.rishiharan.freelanceos.dto.LeadRequestDTO;
+import com.rishiharan.freelanceos.dto.LeadResponseDTO;
+import com.rishiharan.freelanceos.exception.LeadNotFoundException;
 import com.rishiharan.freelanceos.model.Lead;
+import com.rishiharan.freelanceos.repository.LeadRepository;
 import org.springframework.stereotype.Service;
 
-
 import java.util.List;
-import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 @Service
 public class LeadService {
 
-    private List<Lead> leads = new ArrayList<>();
-    private long  idCounter=1;
+    private final LeadRepository leadRepository;
 
-    public Lead createLead(Lead lead){
-
-
-        lead.setId(idCounter++);
-        leads.add(lead);
-        return lead;
-
+    public LeadService(LeadRepository leadRepository) {
+        this.leadRepository = leadRepository;
     }
-    public List<Lead> getAllLeads(){
-        return leads;
+
+    // CREATE
+    public LeadResponseDTO createLead(LeadRequestDTO dto) {
+
+        Lead lead = new Lead();
+        lead.setName(dto.getName());
+        lead.setEmail(dto.getEmail());
+        lead.setCompany(dto.getCompany());
+
+        Lead savedLead = leadRepository.save(lead);
+
+        return mapToResponseDTO(savedLead);
     }
-    public Lead getLeadById(long id){
-        for(Lead lead:leads){
-            if(lead.getId()==id){
-                return lead;
-            }
+
+    // GET ALL
+    public List<LeadResponseDTO> getAllLeads() {
+        return leadRepository.findAll()
+                .stream()
+                .map(this::mapToResponseDTO)
+                .collect(Collectors.toList());
+    }
+
+    // GET BY ID
+    public LeadResponseDTO getLeadById(long id) {
+
+        Lead lead = leadRepository.findById(id)
+                .orElse(null);
+
+        if (lead == null) {
+            throw new LeadNotFoundException("Lead not found with id: " + id);
         }
-        return null;
+
+        return mapToResponseDTO(lead);
     }
-    public void deleteLeadById(long id){
-        leads.removeIf(lead -> lead.getId() == id);
+
+    // DELETE
+    public void deleteLeadById(long id) {
+        leadRepository.deleteById(id);
     }
-    public Lead updateLead(long id, Lead updatedLead){
-        Lead existingLead= getLeadById(id);
+
+    // UPDATE
+    public LeadResponseDTO updateLead(long id, LeadRequestDTO dto) {
+
+        Lead existingLead = leadRepository.findById(id)
+                .orElse(null);
+
         if (existingLead == null) {
-            return null;
+            throw new LeadNotFoundException("Lead not found with id: " + id);
         }
-        existingLead.setName(updatedLead.getName());
-        existingLead.setEmail(updatedLead.getEmail());
-        existingLead.setCompany(updatedLead.getCompany());
 
-        return existingLead;
+        existingLead.setName(dto.getName());
+        existingLead.setEmail(dto.getEmail());
+        existingLead.setCompany(dto.getCompany());
 
+        Lead updatedLead = leadRepository.save(existingLead);
+
+        return mapToResponseDTO(updatedLead);
+    }
+
+    // MAPPER
+    private LeadResponseDTO mapToResponseDTO(Lead lead) {
+
+        return new LeadResponseDTO(
+                lead.getId(),
+                lead.getName(),
+                lead.getEmail(),
+                lead.getCompany()
+        );
     }
 }

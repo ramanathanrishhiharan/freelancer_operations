@@ -1,7 +1,16 @@
 package com.rishiharan.freelanceos.model;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name="leads")
+
 public class Lead {
-    private long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+
     private String name;
     private String email;
     private String company;
