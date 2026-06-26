@@ -42,7 +42,7 @@ public class UserController {
 
     // UPDATE
     @PutMapping("/{id}")
-    public UserResponseDTO updateLead(
+    public UserResponseDTO updateUser(
             @PathVariable long id,
             @Valid @RequestBody UserRequestDTO dto) {
 
