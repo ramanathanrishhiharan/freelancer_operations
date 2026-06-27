@@ -7,6 +7,7 @@ import com.rishiharan.freelanceos.dto.UserRequestDTO;
 import com.rishiharan.freelanceos.dto.UserResponseDTO;
 import com.rishiharan.freelanceos.model.Client;
 import com.rishiharan.freelanceos.service.ClientService;
+import com.rishiharan.freelanceos.service.LeadService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +20,12 @@ import java.util.List;
 public class ClientController {
     @Autowired
     private ClientService clientService;
+    private final LeadService leadService;
+
+    public ClientController(ClientService clientService, LeadService leadService) {
+        this.clientService = clientService;
+        this.leadService = leadService;
+    }
 
     @PostMapping
     public ClientResponseDTO createClient(@Valid @RequestBody ClientRequestDTO dto) {
@@ -51,6 +58,6 @@ public class ClientController {
 
     @PostMapping("/convert/{leadId}")
     public ClientResponseDTO convertClient(@PathVariable long leadId) {
-        return clientService.convertLeadToClient(leadId);
+        return leadService.convertLeadToClient(leadId);
     }
 }

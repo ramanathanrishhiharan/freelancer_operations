@@ -71,21 +71,7 @@ public class ClientService {
 
         return mapToResponseDTO(updatedClient);
     }
-    public ClientResponseDTO convertLeadToClient(long leadId) {
-        Lead lead = leadRepository.findById(leadId).orElseThrow(()->new LeadNotFoundException("Lead not found with this id "+leadId));
 
-        Client client = new  Client();
-
-        client.setName(lead.getName());
-        client.setEmail(lead.getEmail());
-        client.setCompany(lead.getCompany());
-
-        Client savedClient = clientRepository.save(client);
-
-        leadRepository.deleteById(leadId);
-         return  mapToResponseDTO(savedClient);
-
-    }
     private ClientResponseDTO mapToResponseDTO(Client client) {
 
         return new ClientResponseDTO(
