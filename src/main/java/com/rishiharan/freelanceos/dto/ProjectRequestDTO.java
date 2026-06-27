@@ -1,7 +1,5 @@
 package com.rishiharan.freelanceos.dto;
 
-import com.rishiharan.freelanceos.model.Client;
-import com.rishiharan.freelanceos.model.Project;
 import com.rishiharan.freelanceos.model.ProjectStatus;
 
 public class ProjectRequestDTO {
@@ -9,11 +7,14 @@ public class ProjectRequestDTO {
     private String name;
     private String description;
     private ProjectStatus status;
-    private Long clientId;
+
+    // CHANGED: clientId → contactId
+    private Long contactId;
 
     public String getName() {
         return name;
     }
+
     public void setName(String name) {
         this.name = name;
     }
@@ -21,21 +22,24 @@ public class ProjectRequestDTO {
     public String getDescription() {
         return description;
     }
+
     public void setDescription(String description) {
         this.description = description;
     }
-    public ProjectStatus getStatus(){
+
+    public ProjectStatus getStatus() {
         return status;
     }
-    public void setStatus(ProjectStatus status){
-        this.status = this.status;
-    }
-    public Long getClientId() {
-        return clientId;
-    }
-    public void setClientId(Long clientId) {
-        this.clientId = clientId;
+
+    public void setStatus(ProjectStatus status) {
+        this.status = status;
     }
 
+    public Long getContactId() {
+        return contactId;
+    }
 
+    public void setContactId(Long contactId) {
+        this.contactId = contactId;
+    }
 }
