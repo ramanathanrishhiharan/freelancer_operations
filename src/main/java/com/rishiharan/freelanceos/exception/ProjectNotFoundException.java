@@ -1,0 +1,7 @@
+package com.rishiharan.freelanceos.exception;
+
+public class ProjectNotFoundException extends RuntimeException {
+    public ProjectNotFoundException(String message) {
+        super(message);
+    }
+}
