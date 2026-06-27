@@ -6,6 +6,7 @@ import com.rishiharan.freelanceos.exception.LeadNotFoundException;
 import com.rishiharan.freelanceos.model.Lead;
 import com.rishiharan.freelanceos.repository.LeadRepository;
 import org.springframework.stereotype.Service;
+import com.rishiharan.freelanceos.repository.ClientRepository;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -14,9 +15,11 @@ import java.util.stream.Collectors;
 public class LeadService {
 
     private final LeadRepository leadRepository;
+    private final ClientRepository clientRepository;
 
-    public LeadService(LeadRepository leadRepository) {
+    public LeadService(LeadRepository leadRepository, ClientRepository clientRepository) {
         this.leadRepository = leadRepository;
+        this.clientRepository = clientRepository;
     }
 
     // CREATE
