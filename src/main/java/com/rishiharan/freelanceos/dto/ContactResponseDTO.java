@@ -1,27 +1,27 @@
-package com.rishiharan.freelanceos.model;
+package com.rishiharan.freelanceos.dto;
 
-import jakarta.persistence.*;
+import com.rishiharan.freelanceos.model.ContactType;
+import com.rishiharan.freelanceos.model.LeadStatus;
 
-@Entity
-@Table(name = "leads")
-public class Lead {
-    @Enumerated(EnumType.STRING)
-    private LeadStatus status = LeadStatus.NEW;
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
+public class ContactResponseDTO {
+    private Long id ;
     private String name;
     private String email;
     private String company;
+    private ContactType type;
+    private LeadStatus status;
 
-    public Lead() {}
+    public ContactResponseDTO() {
 
-    public Lead(String name, String email, String company) {
+    }
+    public ContactResponseDTO(Long id, String name, String email, String company, ContactType type, LeadStatus status) {
+        this.id = id;
         this.name = name;
         this.email = email;
         this.company = company;
+        this.type = type;
+        this.status = status;
+
     }
 
     public Long getId() {
@@ -39,8 +39,17 @@ public class Lead {
     public String getCompany() {
         return company;
     }
+
+    public ContactType getType() {
+        return type;
+    }
+
     public LeadStatus getStatus() {
         return status;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public void setName(String name) {
@@ -54,7 +63,14 @@ public class Lead {
     public void setCompany(String company) {
         this.company = company;
     }
+
+    public void setType(ContactType type) {
+        this.type = type;
+    }
+
     public void setStatus(LeadStatus status) {
         this.status = status;
     }
+
 }
+

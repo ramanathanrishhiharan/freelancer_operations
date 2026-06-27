@@ -5,10 +5,13 @@ import com.rishiharan.freelanceos.dto.ClientResponseDTO;
 import com.rishiharan.freelanceos.dto.UserRequestDTO;
 import com.rishiharan.freelanceos.dto.UserResponseDTO;
 import com.rishiharan.freelanceos.exception.ClientNotFoundException;
+import com.rishiharan.freelanceos.exception.LeadNotFoundException;
 import com.rishiharan.freelanceos.exception.UserNotFoundException;
 import com.rishiharan.freelanceos.model.Client;
+import com.rishiharan.freelanceos.model.Lead;
 import com.rishiharan.freelanceos.model.User;
 import com.rishiharan.freelanceos.repository.ClientRepository;
+import com.rishiharan.freelanceos.repository.LeadRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,9 +20,12 @@ import java.util.stream.Collectors;
 @Service
 public class ClientService {
     private final ClientRepository clientRepository;
+    private final LeadRepository leadRepository;
 
-    public ClientService(ClientRepository clientRepository) {
+    public ClientService(ClientRepository clientRepository, LeadRepository leadRepository) {
+
         this.clientRepository = clientRepository;
+        this.leadRepository= leadRepository;
     }
 
     public ClientResponseDTO createClient(ClientRequestDTO dto) {
@@ -65,6 +71,7 @@ public class ClientService {
 
         return mapToResponseDTO(updatedClient);
     }
+
     private ClientResponseDTO mapToResponseDTO(Client client) {
 
         return new ClientResponseDTO(
@@ -78,3 +85,4 @@ public class ClientService {
 
 
 }
+
