@@ -48,4 +48,9 @@ public class ClientController {
 
         return clientService.updateClient(id, dto);
     }
+
+    @PostMapping("/convert/{leadId}")
+    public ClientResponseDTO convertClient(@PathVariable long leadId) {
+        return clientService.convertLeadToClient(leadId);
+    }
 }

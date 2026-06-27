@@ -1,5 +1,6 @@
 package com.rishiharan.freelanceos.service;
 
+import com.rishiharan.freelanceos.dto.ClientResponseDTO;
 import com.rishiharan.freelanceos.dto.LeadRequestDTO;
 import com.rishiharan.freelanceos.dto.LeadResponseDTO;
 import com.rishiharan.freelanceos.exception.LeadNotFoundException;
@@ -15,11 +16,11 @@ import java.util.stream.Collectors;
 public class LeadService {
 
     private final LeadRepository leadRepository;
-    private final ClientRepository clientRepository;
+
 
     public LeadService(LeadRepository leadRepository, ClientRepository clientRepository) {
         this.leadRepository = leadRepository;
-        this.clientRepository = clientRepository;
+
     }
 
     // CREATE
@@ -79,6 +80,10 @@ public class LeadService {
 
         return mapToResponseDTO(updatedLead);
     }
+
+    //converting the lead to client
+
+
 
     // MAPPER
     private LeadResponseDTO mapToResponseDTO(Lead lead) {
