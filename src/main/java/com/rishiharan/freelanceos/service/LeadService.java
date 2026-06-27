@@ -1,22 +1,32 @@
 package com.rishiharan.freelanceos.service;
 
+import com.rishiharan.freelanceos.dto.ClientResponseDTO;
 import com.rishiharan.freelanceos.dto.LeadRequestDTO;
 import com.rishiharan.freelanceos.dto.LeadResponseDTO;
 import com.rishiharan.freelanceos.exception.LeadNotFoundException;
+import com.rishiharan.freelanceos.model.Client;
 import com.rishiharan.freelanceos.model.Lead;
+import com.rishiharan.freelanceos.model.LeadStatus;
 import com.rishiharan.freelanceos.repository.LeadRepository;
 import org.springframework.stereotype.Service;
+import com.rishiharan.freelanceos.repository.ClientRepository;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+
 @Service
 public class LeadService {
 
-    private final LeadRepository leadRepository;
 
-    public LeadService(LeadRepository leadRepository) {
+    private final LeadRepository leadRepository;
+    private final ClientRepository clientRepository;
+
+
+    public LeadService(LeadRepository leadRepository, ClientRepository clientRepository) {
         this.leadRepository = leadRepository;
+        this.clientRepository = clientRepository;
+
     }
 
     // CREATE
@@ -77,6 +87,25 @@ public class LeadService {
         return mapToResponseDTO(updatedLead);
     }
 
+    public ClientResponseDTO convertLeadToClient(long leadId) {
+        Lead lead = leadRepository.findById(leadId).orElseThrow(()->new LeadNotFoundException("Lead not found with this id "+leadId));
+
+        Client client = new  Client();
+
+        client.setName(lead.getName());
+        client.setEmail(lead.getEmail());
+        client.setCompany(lead.getCompany());
+
+        Client savedClient = clientRepository.save(client);
+
+        lead.setStatus(LeadStatus.CONVERTED);
+        leadRepository.save(lead);
+        return  mapToResponseDTO(savedClient);
+
+    }
+
+
+
     // MAPPER
     private LeadResponseDTO mapToResponseDTO(Lead lead) {
 
@@ -85,6 +114,16 @@ public class LeadService {
                 lead.getName(),
                 lead.getEmail(),
                 lead.getCompany()
+        );
+    }
+    private ClientResponseDTO mapToResponseDTO(Client client) {
+
+        return new ClientResponseDTO(
+                client.getId(),
+                client.getName(),
+                client.getEmail(),
+                client.getCompany()
+
         );
     }
 }

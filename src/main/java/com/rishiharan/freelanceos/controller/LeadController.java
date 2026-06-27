@@ -1,5 +1,6 @@
 package com.rishiharan.freelanceos.controller;
 
+import com.rishiharan.freelanceos.dto.ClientResponseDTO;
 import com.rishiharan.freelanceos.dto.LeadRequestDTO;
 import com.rishiharan.freelanceos.dto.LeadResponseDTO;
 import com.rishiharan.freelanceos.model.Lead;
@@ -15,8 +16,12 @@ import java.util.List;
 @RequestMapping("/leads")
 public class LeadController {
 
-    @Autowired
-    private LeadService leadService;
+
+    private final LeadService leadService;
+
+    public LeadController(LeadService leadService) {
+        this.leadService = leadService;
+    }
 
     // CREATE
     @PostMapping
@@ -50,5 +55,10 @@ public class LeadController {
             @Valid @RequestBody LeadRequestDTO dto) {
 
         return leadService.updateLead(id, dto);
+    }
+
+    @PostMapping("/convert/{id}")
+    public ClientResponseDTO convert(@PathVariable long id) {
+        return leadService.convertLeadToClient(id);
     }
 }
