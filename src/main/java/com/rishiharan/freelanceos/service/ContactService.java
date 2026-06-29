@@ -6,7 +6,10 @@ import com.rishiharan.freelanceos.dto.ContactResponseDTO;
 import com.rishiharan.freelanceos.model.Contact;
 import com.rishiharan.freelanceos.model.ContactType;
 import com.rishiharan.freelanceos.model.LeadStatus;
+import com.rishiharan.freelanceos.model.User;
 import com.rishiharan.freelanceos.repository.ContactRepository;
+import com.rishiharan.freelanceos.repository.UserRepository;
+import com.rishiharan.freelanceos.security.UserContext;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -16,13 +19,22 @@ import java.util.List;
 public class ContactService {
 
     private final ContactRepository contactRepository;
+    private final UserContext userContext;
 
-    public ContactService(ContactRepository contactRepository) {
+    public ContactService(ContactRepository contactRepository,UserContext userContext) {
         this.contactRepository = contactRepository;
+        this.userContext = userContext;
     }
+
+
+
+
 
     // CREATE LEAD
     public ContactResponseDTO create(ContactRequestDTO dto) {
+        User user = userContext.getCurrentUser();
+
+
 
         Contact contact = new Contact();
 
@@ -38,6 +50,7 @@ public class ContactService {
         );
 
         contact.setCreatedAt(LocalDateTime.now());
+        contact.setUser(user);
 
         return mapToDTO(contactRepository.save(contact));
     }
