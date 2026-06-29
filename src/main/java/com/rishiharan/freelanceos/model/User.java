@@ -14,11 +14,13 @@ public class User {
 
     private String name;
     private String email;
+    private String password;
 
-    public User(long id, String name, String email) {
+    public User(long id, String name, String email,String password) {
         this.id = id;
         this.name = name;
         this.email = email;
+        this.password = password;
 
     }
 
@@ -33,8 +35,11 @@ public class User {
     public String getEmail(){
         return email;
     }
-    public long getId(){
+    public Long getId(){
         return id;
+    }
+    public String getPassword() {
+        return password;
     }
 
     public void setName(String name){
@@ -42,6 +47,14 @@ public class User {
     }
     public void setEmail(String email){
         this.email= email;
+    }
+    public void setId(Long id){
+        this.id = id;
+
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
 }
