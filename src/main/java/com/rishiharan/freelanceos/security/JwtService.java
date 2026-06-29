@@ -12,7 +12,8 @@ import java.util.Date;
 
 @Service
 public class JwtService {
-    private static final String SECRET_KEY = "my-secret-key-my-secret-key-my-secret-key-123456";
+    private static final String SECRET_KEY =
+            "my-super-secure-jwt-secret-key-that-is-long-enough-for-hs256-signature-123456789";
     private Key getSigningKey(){
         return Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
 
@@ -35,5 +36,23 @@ public class JwtService {
                 .getBody();
 
         return claims.getSubject();
+    }
+    public boolean isTokenValid(String token, String email) {
+        String extractedEmail = extractEmail(token);
+        return extractedEmail.equals(email) && !isTokenExpired(token);
+    }
+
+    private boolean isTokenExpired(String token) {
+        return extractAllClaims(token)
+                .getExpiration()
+                .before(new java.util.Date());
+    }
+
+    private Claims extractAllClaims(String token) {
+        return Jwts.parserBuilder()
+                .setSigningKey(getSigningKey())
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
     }
 }
