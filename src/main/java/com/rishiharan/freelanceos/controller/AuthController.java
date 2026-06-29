@@ -2,6 +2,8 @@ package com.rishiharan.freelanceos.controller;
 
 import com.rishiharan.freelanceos.dto.LoginRequestDTO;
 import com.rishiharan.freelanceos.dto.LoginResponseDTO;
+import com.rishiharan.freelanceos.dto.RegisterRequestDTO;
+import com.rishiharan.freelanceos.dto.RegisterResponseDTO;
 import com.rishiharan.freelanceos.service.AuthService;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,5 +24,11 @@ public class AuthController {
     @PostMapping("/login")
     public LoginResponseDTO login(@Valid @RequestBody LoginRequestDTO dto) {
         return authService.login(dto);
+    }
+
+
+    @PostMapping("/register")
+    public RegisterResponseDTO register(@Valid @RequestBody RegisterRequestDTO dto) {
+        return authService.register(dto);
     }
 }
