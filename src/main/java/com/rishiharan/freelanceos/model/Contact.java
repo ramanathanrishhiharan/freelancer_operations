@@ -25,12 +25,16 @@ public class Contact {
 
     private LocalDateTime convertedAt;
 
+    @ManyToOne(fetch= FetchType.LAZY)
+    @JoinColumn(name = "user_id",nullable = false)
+    private User user;
+
     public Contact() {
     }
 
     public Contact(Long id, String name, String email, String company,
                    ContactType type, LeadStatus status,
-                   LocalDateTime createdAt, LocalDateTime convertedAt) {
+                   LocalDateTime createdAt, LocalDateTime convertedAt,User user) {
 
         this.id = id;
         this.name = name;
@@ -40,6 +44,7 @@ public class Contact {
         this.status = status;
         this.createdAt = createdAt;
         this.convertedAt = convertedAt;
+        this.user = user;
     }
 
     // GETTERS
@@ -75,6 +80,9 @@ public class Contact {
     public LocalDateTime getConvertedAt() {
         return convertedAt;
     }
+    public User getUser() {
+        return user;
+    }
 
     // SETTERS
 
@@ -108,5 +116,8 @@ public class Contact {
 
     public void setConvertedAt(LocalDateTime convertedAt) {
         this.convertedAt = convertedAt;
+    }
+    public void setUser(User user) {
+        this.user = user;
     }
 }
