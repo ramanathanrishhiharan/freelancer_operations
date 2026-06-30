@@ -2,6 +2,8 @@ package com.rishiharan.freelanceos.security;
 
 import com.rishiharan.freelanceos.model.User;
 import com.rishiharan.freelanceos.repository.UserRepository;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -15,7 +17,14 @@ public class UserContext {
 
     // TEMP: mock logged-in user
     public User getCurrentUser() {
-        return userRepository.findById(2L)
-                .orElseThrow(() -> new RuntimeException("Default user not found"));
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || !authentication.isAuthenticated()) {
+            throw new RuntimeException("No authenticated user found");
+        }
+
+        String email = authentication.getName();
+
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found with email: " + email));
     }
 }
